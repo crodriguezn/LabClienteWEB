@@ -4,6 +4,7 @@
  * @autor Ivette Mateo Washbrum, Katherine Gallegos Carrillo, Yessenia Vargas Matute, Carlos Luis Rodriguez Nieto
  * @date 30-abr-2017
  * @time 17:44:20
+ * Objetivo: Clase Producto, contiene atributos y metodos de los Productos
  */
 
 include_once("MY_Model.php");
@@ -26,14 +27,14 @@ class mProducto extends MY_Model
         $eProducto = new eProducto();
         $eProducto->parseRow($row);
         
-        return $eProducto;
+        return $eProducto; //me retorna una entidad 
     }
     
     function genId() 
     {
         return parent::genId();
     }
-            
+	
     function save(eProducto &$eProducto)
     {
         try
@@ -45,7 +46,7 @@ class mProducto extends MY_Model
             }
             else
             {
-                $this->_save($this->_update($eProducto->toData(TRUE), array('id'=>$eProducto->id)));
+                $this->_save($this->_update($eProducto->toData(TRUE), $eProducto->id));
             }
         }
         catch (Exception $ex)
@@ -54,6 +55,19 @@ class mProducto extends MY_Model
         }
     }
     
+    
+    function delete($id)
+    {
+        try
+        {
+            $this->_save($this->_delete($id));
+        }
+        catch (Exception $ex)
+        {
+            throw new Exception($ex->getMessage());
+        }
+    }
+
     /* 
      * función: _insert
      * @param $table String 
@@ -78,16 +92,46 @@ class mProducto extends MY_Model
         return "INSERT INTO ".$this->table." (".implode(", ", $keys).") VALUES (".implode(', ', $values).")";
     }
     
-    /* 
+    /*
      * función: _update
      * @param $arrData Array 
      * @param $value String 
      * @param $by String 
      * Descripción, permite actualizar un registro a la base de datos
      */
-    function _update( $values, $where)
+	 
+    function _update( $values, $id)
     {
         foreach ($values as $key => $val)
+        {
+            if($key == 'name' || $key == 'description' || $key == 'presentation' || $key == 'code' || $key == 'url_picture')
+            {
+                //$val = "\"".($val)."\"";
+                $valstr[] = sprintf('%s = "%s"', $key, $val);
+            }
+            else
+            {
+                $valstr[] = sprintf('%s = %s', $key, $val);
+            }
+        }
+
+        $sql = "UPDATE ".$this->table." SET ".implode(', ', $valstr);
+
+        $sql .= " WHERE id = ".$id;
+        return $sql;
+    }
+	
+    /* 
+     * función: _update
+     * @param $arrData Array 
+     * @param $value String 
+     * @param $by String 
+     * Descripción, permite eliminar un registro a la base de datos
+     */
+	 //array('id' =>1)
+    function _delete( $id)//values seria los nombres de los campos y $where un array donde el key seria campo y el value el valor
+    {
+      /*foreach ($where as $key => $val)
         {
             if($key == 'name' || $key == 'description' || $key == 'presentation' || $key == 'code' || $key == 'url_picture')
             {
@@ -95,12 +139,9 @@ class mProducto extends MY_Model
             }
             
             $valstr[] = sprintf('"%s" = %s', $key, $val);
-        }
+        }*/
 
-        $sql = "UPDATE ".$this->table." SET ".implode(', ', $valstr);
-
-        $sql .= ($where != '' AND count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
-
+        $sql = "DELETE FROM ".$this->table." WHERE id = ".$id;
         return $sql;
     }
 
@@ -131,7 +172,6 @@ class mProducto extends MY_Model
                 " .( is_null($filter->id_catalog) ? "":" AND p.id_catalog = $filter->id_catalog "). "
                 " .( is_null($filter->limit) || is_null($filter->offset) ? '' : " LIMIT ".( $filter->limit )." OFFSET ".( $filter->offset )." " ) . "
                 ";
-        // print_r($sql);
         $queryR = mysql_query($sql);
         
         while ($row = mysql_fetch_assoc($queryR))  

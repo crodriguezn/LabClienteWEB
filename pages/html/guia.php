@@ -115,7 +115,7 @@ and open the template in the editor.
                                             $img = "../../resources/img/nologo.png";
                                             //print_r($img);
                                             //print_r((!is_null($eProducto->url_picture) && file_exists("../../".$eProducto->url_picture)));
-                                            if (!is_null($eProducto->url_picture) && file_exists("../../" . $eProducto->url_picture)) {
+                                            if ((!is_null($eProducto->url_picture) && !empty($eProducto->url_picture)) && file_exists("../../" . $eProducto->url_picture)) {
                                                 $img = "../../" . $eProducto->url_picture;
                                             }
                                             ?>
