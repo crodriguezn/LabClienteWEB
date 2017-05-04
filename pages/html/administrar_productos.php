@@ -3,6 +3,7 @@
  * @autor Ivette Mateo Washbrum, Katherine Gallegos Carrillo, Yessenia Vargas Matute, Carlos Luis Rodriguez Nieto
  * @date 01-may-2017
  * @time 7:20:10
+ * Objetivo: Página para visualizar información principal de los productos naturales
  */
 
 require_once '../../system.php';
@@ -25,7 +26,7 @@ and open the template in the editor.
 -->
 <html lang="es">
     <head>
-        <title>LABFARVE::Guía</title>
+        <title>100% Natural y Saludable::Bienvenidos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Carlos Rodriguez">
@@ -44,8 +45,8 @@ and open the template in the editor.
         <!-- Latest compiled and minified JavaScript -->
         <script type="text/javascript" src="../../resources/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <script type="text/javascript" src="../js/administrar_productos.js"></script>
-
+	    <!-- Se hace referencia a los javascript para administrar y eliminar productos -->
+        <script type="text/javascript" src="../js/administrar_productos.js"></script>		
     </head>
     <body>
         <header class="cabecera">
@@ -60,10 +61,10 @@ and open the template in the editor.
                     <div class="col-sm-8" id="headertopmenu">
                         <nav class="menu">
                             <ul>
+                                <li><a href="index.php">Inicio</a></li>
                                 <li><a href="productos.php">Productos</a></li>
                                 <li><a href="guia.php">Guía</a></li>
                                 <li><a href="administrar_productos.php">Administrar Productos</a></li>
-                                <li><a href="http://luis-rodriguez-ec.herokuapp.com/site/index" target="_blank">Contacto</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -74,7 +75,7 @@ and open the template in the editor.
             <div class="container ">
                 <div class="breadcrumb-line">
                     <ul class="breadcrumb">
-                        <li><a href="javascript:void(0);">Home</a></li>
+                        <li><a href="index.php">Inicio</a></li>
                         <li><a href="administrar_productos.php">Administrar Productos</a></li>
                     </ul>
                 </div>
@@ -110,17 +111,19 @@ and open the template in the editor.
                                         <tbody>
                                             <?php
                                             /* @var $eProducto eProducto  */
+											/* Por cada producto se carga la información de id, código, nombre, presentación y los botones editar y eliminar*/
                                             foreach ($eProductos as $eProducto) {
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?php echo $eProducto->id ?></td>
                                                     <td class="text-center"><?php echo $eProducto->code ?></td>
-                                                    <td class="text-center"><?php echo $eProducto->name ?></td>
+                                                    <td class="text-center"><?php echo $eProducto->name ?></td> 
                                                     <td class="text-center"><?php echo $eProducto->presentation ?></td>
                                                     <td class="text-center">
-                                                        <a type="button" class="btn btn-default" href="editar_producto.php"><span class="glyphicon glyphicon-edit"></span></a> 
-                                                        <a type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a> 
-                                                    </td>
+                                                        <a type="button" class="btn btn-default" href="editar_producto.php?id=<?php echo $eProducto->id?>"><span class="glyphicon glyphicon-edit"></span></a> 									
+                                                        <a type="button" class="btn btn-default action-eliminar" id = "<?php echo $eProducto->id;?>"><span class="glyphicon glyphicon-trash"></span></a> 
+													</a>	
+													</td>
                                                 </tr>
                                                 <?php
                                             }
@@ -128,10 +131,7 @@ and open the template in the editor.
                                         </tbody>
                                     </table>
                                 </div>
-
-
-
-                            </div>
+							</div>
                         </div>
                     </div>
                 </div>

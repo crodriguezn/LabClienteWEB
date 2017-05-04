@@ -3,6 +3,7 @@
  * @autor Ivette Mateo Washbrum, Katherine Gallegos Carrillo, Yessenia Vargas Matute, Carlos Luis Rodriguez Nieto
  * @date 01-may-2017
  * @time 22:26:12
+ * Objetivo: Página que permite editar un producto seleccionado
  */
 
 require_once '../../system.php';
@@ -11,6 +12,14 @@ require_once BASECLASS . 'catalogo_tipo.php';
 require_once BASECLASS . 'producto.php';
 require_once BASECLASS . 'producto_tipo.php';
 
+if(!isset($_GET['id']))//si no existe el id no haga nada
+{
+	echo 'ninguna acción';
+	exit(0);//permite detener la ejecución de la app
+}
+
+$id = $_GET['id'];
+
 $mCatalogo = new mCatalogo();
 $filterCatalogo = new filterCatalogo();
 $filterCatalogo->id_catalog_type = 1;
@@ -18,6 +27,10 @@ $mCatalogo->filter($filterCatalogo, $eCatalogos/* REF */);
 
 $mProducto_Tipo = new mProducto_Tipo();
 $mProducto_Tipo->filter($eProductoTipos);
+
+$mProducto = new mProducto();
+/* @var $eProducto eProducto */  //aqui esto referenciando la entidad
+$eProducto = $mProducto->load($id);
 //echo phpversion();
 ?>
 
@@ -32,7 +45,7 @@ and open the template in the editor.
         <title>100% Natural y Saludable::Bienvenidos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Carlos Rodriguez">
+        <meta name="author" content="Yessenia Vargas Matute">
         <meta name="description" content="CV">
 
         <!-- Latest compiled and minified CSS -->
@@ -80,7 +93,7 @@ and open the template in the editor.
                     <ul class="breadcrumb">
                         <li><a href="index.php">Inicio</a></li>
                         <li><a href="administrar_productos.php">Administrar Productos</a></li>
-                        <li><a href="agregar_producto.php">Agregar Producto</a></li>
+                        <li><a href="editar_producto.php">Editar Producto</a></li>
                     </ul>
                 </div>
 
@@ -95,21 +108,25 @@ and open the template in the editor.
                     <div class="col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4>Agregar Productos</h4>
+                                <h4>Editar Producto</h4>
                             </div>
                             <div class="panel-body">
                                 <form enctype="multipart/form-data" class="form-horizontal" name="frmProducto">
-                                    <input type="hidden" name="accion" value="agregar">
+                                    <input type="hidden" name="accion" value="editar">
+									<input type="hidden" name="id" value="<?php echo $eProducto->id ?>">
                                     <div class="form-group">
                                         <label for="comboTipoProducto" class="col-sm-2 control-label">Tipo de Producto</label>
                                         <div class="col-sm-10">
                                             <select class="form-control" name="cboTipoProducto">
-                                                <option value="0" selected="selected">S/N Tipo Producto</option>
+												<?php
+													//$id = @$_GET["id"]; 
+													?>
+                                                <option value="0" selected='selected'> <?php echo $id ?></option>
                                                 <?php
                                                 /* @var $eProductoTipo eProductoTipo */
                                                 foreach ($eProductoTipos as $eProductoTipo) {
                                                     ?>
-                                                    <option value="<?php echo $eProductoTipo->id ?>"><?php echo $eProductoTipo->name ?></option>
+                                                    <option <?php echo ($eProducto->id_product_type == $eProductoTipo->id) ? "selected='selected'":""?> value="<?php echo $eProductoTipo->id ?>"><?php echo $eProductoTipo->name ?></option>
                                                     <?php
                                                 }
                                                 ?>
@@ -125,7 +142,7 @@ and open the template in the editor.
                                                 /* @var $eCatalogo eCatalogo */
                                                 foreach ($eCatalogos as $eCatalogo) {
                                                     ?>
-                                                    <option value="<?php echo $eCatalogo->id ?>"><?php echo $eCatalogo->name ?></option>
+                                                    <option <?php echo ($eProducto->id_catalog == $eCatalogo->id) ? "selected='selected'":""?> value="<?php echo $eCatalogo->id ?>"><?php echo $eCatalogo->name ?></option>
                                                     <?php
                                                 }
                                                 ?>
@@ -135,25 +152,25 @@ and open the template in the editor.
                                     <div class="form-group">
                                         <label for="inputNombre" class="col-sm-2 control-label">Nombre</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="txtNombre" placeholder="Nombre">
+                                            <input type="text" class="form-control" name="txtNombre" value="<?php echo $eProducto->name ?>" placeholder="Nombre">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputDescripcion" class="col-sm-2 control-label">Descripción</label>
                                         <div class="col-sm-10">
-                                            <textarea name="txtDescripcion" class="form-control" ></textarea>
+                                            <textarea name="txtDescripcion" class="form-control" ><?php echo $eProducto->description ?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPresentación" class="col-sm-2 control-label">Presentación</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="txtPresentacion" placeholder="Presentación">
+                                            <input type="text" class="form-control" name="txtPresentacion" value="<?php echo $eProducto->presentation ?>" placeholder="Presentación">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputCodigo" class="col-sm-2 control-label">Codigo</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="txtCodigo" placeholder="Codigo">
+                                            <input type="text" class="form-control" name="txtCodigo" value="<?php echo $eProducto->code ?>" placeholder="Codigo">
                                         </div>
                                     </div>
                                     <div class="form-group">

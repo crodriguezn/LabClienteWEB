@@ -1,4 +1,9 @@
-
+/*
+ * @autor Ivette Mateo Washbrum, Katherine Gallegos Carrillo, Yessenia Vargas Matute, Carlos Luis Rodriguez Nieto
+ * @date 01-may-2017
+ * @time 7:20:10
+ * Objetivo: Javascript utilizado para agregar productos
+ */
 $(document).ready(function ()
 {
     ControllerProducto.init();
@@ -61,14 +66,25 @@ ControllerProducto = {
                 window.location.assign("administrar_productos.php");
         });
     },
+		
+
+//Valida que se haya completado la información necesaria de los productos
     validar: function ()
     {
         var self = this;
 
+        var cboTipoProducto = $('[name="cboTipoProducto"]', self.$frm).val();
+        if (cboTipoProducto == 0)
+        {
+            alert('Error: Seleccione un tipo de producto');
+            $('[name="cboTipoProducto"]', self.$frm).focus();
+            return false;
+        }
+        
         var cboCategoria = $('[name="cboCategoria"]', self.$frm).val();
         if (cboCategoria == 0)
         {
-            alert('Error: Seleccione la categoria del producto');
+            alert('Error: Seleccione una categoria de producto');
             $('[name="cboCategoria"]', self.$frm).focus();
             return false;
         }

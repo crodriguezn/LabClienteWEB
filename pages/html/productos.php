@@ -24,7 +24,7 @@ and open the template in the editor.
 -->
 <html lang="es">
     <head>
-        <title>LABFARVE::Productos</title>
+        <title>100% Natural y Saludable::Bienvenidos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Carlos Rodriguez">
@@ -58,10 +58,10 @@ and open the template in the editor.
                     <div class="col-sm-8" id="headertopmenu">
                         <nav class="menu">
                             <ul>
+                                <li><a href="index.php">Inicio</a></li>
                                 <li><a href="productos.php">Productos</a></li>
                                 <li><a href="guia.php">Guía</a></li>
                                 <li><a href="administrar_productos.php">Administrar Productos</a></li>
-                                <li><a href="http://luis-rodriguez-ec.herokuapp.com/site/index" target="_blank">Contacto</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -72,7 +72,7 @@ and open the template in the editor.
             <div class="container ">
                 <div class="breadcrumb-line">
                     <ul class="breadcrumb">
-                        <li><a href="javascript:void(0);">Home</a></li>
+                        <li><a href="index.php">Inicio</a></li>
                         <li><a href="productos.php">Productos</a></li>
                     </ul>
                 </div>
@@ -112,7 +112,7 @@ and open the template in the editor.
                                             $img = "../../resources/img/nologo.png";
                                             //print_r($img);
                                             //print_r((!is_null($eProducto->url_picture) && file_exists("../../".$eProducto->url_picture)));
-                                            if (!is_null($eProducto->url_picture) && file_exists("../../" . $eProducto->url_picture)) {
+                                            if ((!is_null($eProducto->url_picture) && !empty($eProducto->url_picture)) && file_exists("../../" . $eProducto->url_picture)) {
                                                 $img = "../../" . $eProducto->url_picture;
                                             }
                                             ?>
