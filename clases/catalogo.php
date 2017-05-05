@@ -8,7 +8,10 @@
 
 include_once("MY_Model.php");
 include_once("MY_Entity.php");
-
+/* 
+ * clase: mCatalogo
+ * Descripción: permite la creación de objetos de tipo eCatalogo con la opción de listar los registros disponibles en la base de datos
+ */
 class mCatalogo extends MY_Model
 {
     protected $table = 'catalog';
@@ -28,7 +31,10 @@ class mCatalogo extends MY_Model
         
         return $eCatalogo;
     }
-    
+    /* 
+     * función: filter 
+     * Descripción: obtener un listado de catálogo dado un filtro específico
+     */
     public function filter(filterCatalogo $filter, &$eCatalogos )
     {
         $eCatalogos = array();
@@ -63,12 +69,15 @@ class mCatalogo extends MY_Model
     }
     
 }
-
+/* 
+ * clase: eProducto
+ * Descripción: permite la definición de las características de un 'catálogo'
+ */
 class eCatalogo extends MY_Entity
 {
-    public $id_catalog_type;
-    public $name;
-    public $code;
+    public $id_catalog_type; //tipo de catálogo
+    public $name; //Nombre del catálogo
+    public $code; //Código del catálogo
 
 
     function __construct($useDefault = TRUE)
@@ -83,10 +92,13 @@ class eCatalogo extends MY_Entity
         }
     }
 }
-
+/* 
+ * clase: filterProducto
+ * Descripción: auxiliar para definir el filtro de búsqueda de un catálogo
+ */
 class filterCatalogo extends MY_Entity_Filter
 {
-    public $id_catalog_type;
+    public $id_catalog_type; //Por tipo de catálogo
     
     public function __construct()
     {

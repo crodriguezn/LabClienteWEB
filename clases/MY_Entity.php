@@ -9,7 +9,7 @@
 
 /* 
  * clase: MY_Entity
- * Descripción, permite implementar entidades
+ * Descripción: permite implementar entidades
  */
 class MY_Entity
 {

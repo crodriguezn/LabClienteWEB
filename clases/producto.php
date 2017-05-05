@@ -9,7 +9,10 @@
 
 include_once("MY_Model.php");
 include_once("MY_Entity.php");
-
+/* 
+ * clase: mProducto
+ * Descripción: permite la creación de objetos de tipo eProducto con la opciones de crear, editar, listar y eliminar en la base de datos
+ */
 class mProducto extends MY_Model
 {
     protected $table = 'product';
@@ -19,7 +22,10 @@ class mProducto extends MY_Model
         parent::__construct();
         
     }
-    
+    /* 
+     * función: load
+     * Descripción: cargar la información de un producto
+     */
     function load($value, $by = 'id', $except_value = '', $except_by = 'id')
     {
         $row = parent::load($value, $by, $except_value, $except_by);
@@ -30,21 +36,30 @@ class mProducto extends MY_Model
         return $eProducto; //me retorna una entidad 
     }
     
+	/* 
+     * función: genId
+     * Descripción: obtener identificador del registro
+     */
     function genId() 
     {
         return parent::genId();
     }
 	
+	/* 
+     * función: save
+     * Descripción: almacenamiento de cambios en la base de datos
+     */
     function save(eProducto &$eProducto)
     {
         try
         {
+			//Si el identificador está vacio, es un nuevo producto
             if (empty($eProducto->id)) 
             {
                 $eProducto->id = $this->genId();
                 $this->_save($this->_insert($eProducto->toData()));
             }
-            else
+            else // Caso contrario se trata de un proceso de actualización de información
             {
                 $this->_save($this->_update($eProducto->toData(TRUE), $eProducto->id));
             }
@@ -55,7 +70,10 @@ class mProducto extends MY_Model
         }
     }
     
-    
+    /* 
+     * función: delete
+     * Descripción: eliminar un producto de la base de datos
+     */
     function delete($id)
     {
         try
@@ -122,29 +140,21 @@ class mProducto extends MY_Model
     }
 	
     /* 
-     * función: _update
-     * @param $arrData Array 
-     * @param $value String 
-     * @param $by String 
+     * función: _delete
+     * @param $id String  
      * Descripción, permite eliminar un registro a la base de datos
      */
 	 //array('id' =>1)
-    function _delete( $id)//values seria los nombres de los campos y $where un array donde el key seria campo y el value el valor
+    function _delete( $id)
     {
-      /*foreach ($where as $key => $val)
-        {
-            if($key == 'name' || $key == 'description' || $key == 'presentation' || $key == 'code' || $key == 'url_picture')
-            {
-                $val = "\"".($val)."\"";
-            }
-            
-            $valstr[] = sprintf('"%s" = %s', $key, $val);
-        }*/
-
         $sql = "DELETE FROM ".$this->table." WHERE id = ".$id;
         return $sql;
     }
 
+	/* 
+     * función: filter 
+     * Descripción: obtener un listado de productos dado un filtro específico
+     */
     public function filter(filterProducto $filter, &$eProductos, &$eProductoTipos )
     {
         $eProductos = array();
@@ -199,16 +209,19 @@ class mProducto extends MY_Model
         parent::desconectar();
     }
 }
-
+/* 
+ * clase: eProducto
+ * Descripción: permite la definición de las características de un 'producto'
+ */
 class eProducto extends MY_Entity
 {
-    public $id_product_type;
-    public $id_catalog;
-    public $name;
-    public $description;
-    public $presentation;
-    public $code;
-    public $url_picture;
+    public $id_product_type; //tipo de producto
+    public $id_catalog; //catálogo al que pertenece
+    public $name; // nombre del producto
+    public $description; // descripcion del producto
+    public $presentation; // forma de presentacion del producto
+    public $code; //código del producto
+    public $url_picture; //imagen
 
 
     function __construct($useDefault = TRUE)
@@ -227,11 +240,14 @@ class eProducto extends MY_Entity
         }
     }
 }
-
+/* 
+ * clase: filterProducto
+ * Descripción: auxiliar para definir el filtro de búsqueda de un producto
+ */
 class filterProducto extends MY_Entity_Filter
 {
-    public $id_product_type;
-    public $id_catalog;
+    public $id_product_type; // Por tipo de producto
+    public $id_catalog; //Por catálogo al que pertenece
     
     public function __construct()
     {
