@@ -1,10 +1,9 @@
 <?php
 
 /*
- * @autor Carlos Luis Rodriguez Nieto (taylorluis93@gmail.com)
+ * @autor Ivette Mateo Washbrum, Katherine Gallegos Carrillo, Yessenia Vargas Matute, Carlos Luis Rodriguez Nieto
  * @date 30-abr-2017
  * @time 18:31:57
- * @link http://luis-rodriguez-ec.herokuapp.com/site/index
  */
 include_once("conexion.php");
 

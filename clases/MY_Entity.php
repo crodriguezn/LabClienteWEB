@@ -4,7 +4,6 @@
  * @autor Ivette Mateo Washbrum, Katherine Gallegos Carrillo, Yessenia Vargas Matute, Carlos Luis Rodriguez Nieto
  * @date 30-abr-2017
  * @time 18:21:32
- * @link http://luis-rodriguez-ec.herokuapp.com/site/index
  */
 
 
